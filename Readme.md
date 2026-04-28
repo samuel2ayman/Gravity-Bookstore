@@ -219,7 +219,7 @@ The Power BI report connects directly to the SSAS cube and provides two interact
 
 ### Page 1 — Sales Overview
 
-![Dashboard Page 1](Power Bi/Dashboard_Page_1.png)
+![Dashboard Page 1](Power%20Bi/Dashboard_Page_1.png)
 
 | KPI | Value |
 |---|---|
@@ -238,7 +238,7 @@ The Power BI report connects directly to the SSAS cube and provides two interact
 
 ### Page 2 — Operations & Analytics
 
-![Dashboard Page 2](Power Bi/Dashboard_Page_2.png)
+![Dashboard Page 2](Power%20Bi/Dashboard_Page_2.png)
 
 | KPI | Value |
 |---|---|
