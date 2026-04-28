@@ -57,7 +57,7 @@ The domain includes inherent many-to-many relationships:
 
 ### Data Warehouse Model (SSMS View)
 
-![Cube Diagram](Cube_Diagram.png)
+![Cube Diagram](SSAS/Cube_Diagram.png)
 
 ---
 
@@ -76,32 +76,32 @@ All dimensions implement **Slowly Changing Dimensions (SCD)** where applicable, 
 | `DimDate` | Standard date dimension with Day, Month, Quarter, Year hierarchies |
 
 #### Address Dimension
-![Address Dim](Address_Dim.png)
+![Address Dim](SSIS/Address_Dim.png)
 
 #### Author Dimension
-![Author Dim](Author_Dim.png)
+![Author Dim](SSIS/Author_Dim.png)
 
 #### Book Dimension
-![Book Dim](Book_Dim.png)
+![Book Dim](SSIS/Book_Dim.png)
 
 #### Customer Dimension
-![Customer Dim](Customer_Dim.png)
+![Customer Dim](SSIS/Customer_Dim.png)
 
 #### Shipping Method Dimension
-![Shipping Method](Shipping__Method.png)
+![Shipping Method](SSIS/Shipping__Method.png)
 
 #### Status Dimension
-![Status Dim](Status_Dim.png)
+![Status Dim](SSIS/Status_Dim.png)
 
 ---
 
 ### Bridge Tables
 
 #### Book–Author Bridge
-![Book Author Bridge](Book_Author_Bridge.png)
+![Book Author Bridge](SSIS/Book_Author_Bridge.png)
 
 #### Customer–Address Bridge
-![Customer Address Bridge](Customer_Address_Bridge.png)
+![Customer Address Bridge](SSIS/Customer_Address_Bridge.png)
 
 ---
 
@@ -113,10 +113,10 @@ All dimensions implement **Slowly Changing Dimensions (SCD)** where applicable, 
 | `Fact_Order_History` | One row per order status event | Status tracking over time |
 
 #### Fact Sales
-![Fact Sales](Fact_Sales.png)
+![Fact Sales](SSIS/Fact_Sales.png)
 
 #### Fact Order History
-![Fact Order History](Fact_Order_Sales.png)
+![Fact Order History](SSIS/Fact_Order_Sales.png)
 
 ---
 
@@ -132,7 +132,7 @@ The master package orchestrates execution in strict dependency order:
 Execute_Dims → Execute_Bridges → Execute_Facts
 ```
 
-![Master Execute](Master_Execute.png)
+![Master Execute](SSIS/Master_Execute.png)
 
 ---
 
@@ -140,7 +140,7 @@ Execute_Dims → Execute_Bridges → Execute_Facts
 
 All six dimension packages run sequentially to ensure referential integrity before any bridge or fact data is loaded.
 
-![Execute Dimensions](Execute_Dimensions.png)
+![Execute Dimensions](SSIS/Execute_Dimensions.png)
 
 Each dimension package follows a standard SCD pipeline pattern:
 
@@ -159,15 +159,15 @@ Each dimension package follows a standard SCD pipeline pattern:
 
 Bridge tables are loaded after all dimensions are ready, performing foreign key lookups to resolve surrogate keys.
 
-![Execute Bridges](Execute_Bridges.png)
+![Execute Bridges](SSIS/Execute_Bridges.png)
 
 **Book_Author** — Lookup on `Book_Key` and `Author_Key`:
 
-![Book Author Bridge ETL](Book_Author_Bridge.png)
+![Book Author Bridge ETL](SSIS/Book_Author_Bridge.png)
 
 **Customer_Address** — Lookup on `Customer_Key` and `Address_Key`:
 
-![Customer Address Bridge ETL](Customer_Address_Bridge.png)
+![Customer Address Bridge ETL](SSIS/Customer_Address_Bridge.png)
 
 ---
 
@@ -175,15 +175,15 @@ Bridge tables are loaded after all dimensions are ready, performing foreign key 
 
 Facts are loaded last, after all dimension and bridge tables are populated, using multiple sequential lookups to resolve all foreign keys.
 
-![Execute Facts](Execute_Facts.png)
+![Execute Facts](SSIS/Execute_Facts.png)
 
 **Fact_Sales** — Resolves `Book_Key`, `Customer_Key`, `Shipping_Method_Key`, and `Date_Key` via chained lookups across 15,400 rows:
 
-![Fact Sales ETL](Fact_Sales.png)
+![Fact Sales ETL](SSIS/Fact_Sales.png)
 
 **Fact_Order_History** — Resolves `Status_Key` and `Date_Key` across 22,344 rows:
 
-![Fact Order History ETL](Fact_Order_Sales.png)
+![Fact Order History ETL](SSIS/Fact_Order_Sales.png)
 
 ---
 
@@ -209,7 +209,7 @@ The cube exposes the following dimensions to users:
 
 ### Cube Browser (MDX Query Result)
 
-![Cube](Cube.png)
+![Cube](SSAS/Cube.png)
 
 ---
 
@@ -219,7 +219,7 @@ The Power BI report connects directly to the SSAS cube and provides two interact
 
 ### Page 1 — Sales Overview
 
-![Dashboard Page 1](Dashboard_Page_1.png)
+![Dashboard Page 1](Power Bi/Dashboard_Page_1.png)
 
 | KPI | Value |
 |---|---|
@@ -238,7 +238,7 @@ The Power BI report connects directly to the SSAS cube and provides two interact
 
 ### Page 2 — Operations & Analytics
 
-![Dashboard Page 2](Dashboard_Page_2.png)
+![Dashboard Page 2](Power Bi/Dashboard_Page_2.png)
 
 | KPI | Value |
 |---|---|
@@ -289,5 +289,3 @@ Gravity_BookStore_DWH/
 ```
 
 ---
-
-*Built with ❤️ using SQL Server, SSIS, SSAS, and Power BI*
